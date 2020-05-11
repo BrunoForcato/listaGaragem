@@ -1,21 +1,44 @@
 const express = require('express');
-
+const database = require('./database');
 const server = express();
+server.use(express.json());
 
-server.get('/', function(request, response) {
-    response.send('Lista Garagems');
+server.get('/', async function(request, response) {
+
+    const dados = await database.select();
+    return response.json(dados);
+});
+
+server.post('/', async function(request, response) {
+
+    const placa = request.body.placa;
+    const nomeCliente = request.body.nomeCliente;
+    const duracaoMin = request.body.duracaoMin;
+
+    const result = await database.insert(placa, nomeCliente, duracaoMin);
+
+    return response.status(204).send()
 })
 
-server.post('/', function(request, response) {
-    response.send('Hello World!');
+server.put('/', async function(request, response) {
+
+    const idVaga = request.body.idVaga;
+    const placa = request.body.placa;
+    const nomeCliente = request.body.nomeCliente;
+    const duracaoMin = request.body.duracaoMin;
+
+    const result = await database.update(idVaga, placa, nomeCliente, duracaoMin);
+
+    return response.status(204).send()
 })
 
-server.put('/', function(request, response) {
-    response.send('Hello World!');
-})
+server.delete('/', async function(request, response) {
+    
+    const idVaga = request.body.idVaga;
+    
+    const result = await database.delete(idVaga);
 
-server.delete('/', function(request, response) {
-    response.send('Hello World!');
+     return response.status(204).send()
 })
 
 

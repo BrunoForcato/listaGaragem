@@ -35,9 +35,9 @@ server.put('/', async function(request, response) {
     return response.status(204).send()
 })
 
-server.delete('/', async function(request, response) {
+server.delete('/:idVaga', async function(request, response) {
     
-    const idVaga = request.body.idVaga;
+    const idVaga = request.params.id;
     
     const result = await database.delete(idVaga);
 
